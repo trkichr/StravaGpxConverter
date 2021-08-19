@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>StravaGpxConverter</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.7" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.7.3" />
+    <PackageReference Include="Prism.DryIoc" Version="8.0.0.1909" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Modules\StravaGpxConverter.Modules.PopupContents\StravaGpxConverter.Modules.PopupContents.csproj" />
+    <ProjectReference Include="..\Modules\StravaGpxConverter.Modules.TrackContent\StravaGpxConverter.Modules.TrackContent.csproj" />
+    <ProjectReference Include="..\StravaGpxConverter.Core\StravaGpxConverter.Core.csproj" />
+    <ProjectReference Include="..\Services\StravaGpxConverter.Services.Interfaces\StravaGpxConverter.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\Services\StravaGpxConverter.Services\StravaGpxConverter.Services.csproj" />
+    <ProjectReference Include="..\StravaGpxConverter.Infrastructure\StravaGpxConverter.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

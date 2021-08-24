@@ -2,8 +2,37 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"             
-             prism:ViewModelLocator.AutoWireViewModel="True">
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Height="30" Width="950">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="110" />
+        </Grid.ColumnDefinitions>
+        <StackPanel
+            Grid.Column="0"
+            HorizontalAlignment="Stretch"
+            Orientation="Horizontal">
+            <TextBlock Text="ファイル名:" Style="{StaticResource BasicTextStyle}" />
+            <Label Content="{Binding GpxFileName.Value}"
+                   Width="300"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Stretch"/>
+            <Button
+            Width="80"
+            Margin="3"
+            Content="選択"
+            Command="{Binding SelectGpxFileCommand}">
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    Orientation="Horizontal">
+            <Button
+                    Content="実行"
+                    Width="80"
+                    Margin="3"
+                    Command="{Binding ReadGpxFileCommand}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

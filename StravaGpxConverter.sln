@@ -9,21 +9,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{CF58
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{06F6DC59-6941-4A61-BFD5-6CC0C202EE70}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaGpxConverter.Services", "StravaGpxConverter\Services\StravaGpxConverter.Services\StravaGpxConverter.Services.csproj", "{A97E5A3B-FF00-46D7-A385-9B3B3C6ACF8F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaGpxConverter.Services.Interfaces", "StravaGpxConverter\Services\StravaGpxConverter.Services.Interfaces\StravaGpxConverter.Services.Interfaces.csproj", "{49A81C92-63B8-4C3D-A238-A9B0614965D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaGpxConverter", "StravaGpxConverter\StravaGpxConverter\StravaGpxConverter.csproj", "{0009498F-5696-4497-84F1-731B581C8D62}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaGpxConverter.Core", "StravaGpxConverter\StravaGpxConverter.Core\StravaGpxConverter.Core.csproj", "{23401FB9-D414-4323-9263-894BBDDBF6A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StravaGpxConverter.Infrastructure", "StravaGpxConverter\StravaGpxConverter.Infrastructure\StravaGpxConverter.Infrastructure.csproj", "{2D94ACF3-67F3-4ED4-945C-C98647DA28BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaGpxConverter.Infrastructure", "StravaGpxConverter\StravaGpxConverter.Infrastructure\StravaGpxConverter.Infrastructure.csproj", "{2D94ACF3-67F3-4ED4-945C-C98647DA28BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StravaGpxConverter.Modules.PopupContents", "StravaGpxConverter\Modules\StravaGpxConverter.Modules.PopupContents\StravaGpxConverter.Modules.PopupContents.csproj", "{97BFAB2A-F657-485F-B5E0-04D92F04347D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaGpxConverter.Modules.PopupContents", "StravaGpxConverter\Modules\StravaGpxConverter.Modules.PopupContents\StravaGpxConverter.Modules.PopupContents.csproj", "{97BFAB2A-F657-485F-B5E0-04D92F04347D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StravaGpxConverter.Modules.TrackContent", "StravaGpxConverter\Modules\StravaGpxConverter.Modules.TrackContent\StravaGpxConverter.Modules.TrackContent.csproj", "{DEAB8748-D25B-408C-93FB-261EA2C534B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaGpxConverter.Modules.TrackContent", "StravaGpxConverter\Modules\StravaGpxConverter.Modules.TrackContent\StravaGpxConverter.Modules.TrackContent.csproj", "{DEAB8748-D25B-408C-93FB-261EA2C534B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StravaGpxConverter.Modules.TrackContent.Tests", "StravaGpxConverter\Tests\StravaGpxConverter.Modules.TrackContent.Tests\StravaGpxConverter.Modules.TrackContent.Tests.csproj", "{C9ACBB6C-CE50-4593-AC61-074898812F09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaGpxConverter.Modules.TrackContent.Tests", "StravaGpxConverter\Tests\StravaGpxConverter.Modules.TrackContent.Tests\StravaGpxConverter.Modules.TrackContent.Tests.csproj", "{C9ACBB6C-CE50-4593-AC61-074898812F09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StravaGpxConverter.Services", "StravaGpxConverter\Services\StravaGpxConverter.Services\StravaGpxConverter.Services.csproj", "{8A471488-B6C2-43C7-B29F-E5AB80C1A79C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A97E5A3B-FF00-46D7-A385-9B3B3C6ACF8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A97E5A3B-FF00-46D7-A385-9B3B3C6ACF8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A97E5A3B-FF00-46D7-A385-9B3B3C6ACF8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A97E5A3B-FF00-46D7-A385-9B3B3C6ACF8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49A81C92-63B8-4C3D-A238-A9B0614965D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{49A81C92-63B8-4C3D-A238-A9B0614965D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49A81C92-63B8-4C3D-A238-A9B0614965D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,16 +59,20 @@ Global
 		{C9ACBB6C-CE50-4593-AC61-074898812F09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9ACBB6C-CE50-4593-AC61-074898812F09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9ACBB6C-CE50-4593-AC61-074898812F09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A471488-B6C2-43C7-B29F-E5AB80C1A79C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A471488-B6C2-43C7-B29F-E5AB80C1A79C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A471488-B6C2-43C7-B29F-E5AB80C1A79C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A471488-B6C2-43C7-B29F-E5AB80C1A79C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{A97E5A3B-FF00-46D7-A385-9B3B3C6ACF8F} = {06F6DC59-6941-4A61-BFD5-6CC0C202EE70}
 		{49A81C92-63B8-4C3D-A238-A9B0614965D6} = {06F6DC59-6941-4A61-BFD5-6CC0C202EE70}
 		{97BFAB2A-F657-485F-B5E0-04D92F04347D} = {CF585ED2-5BFE-43B4-A429-B47564F2A374}
 		{DEAB8748-D25B-408C-93FB-261EA2C534B6} = {CF585ED2-5BFE-43B4-A429-B47564F2A374}
 		{C9ACBB6C-CE50-4593-AC61-074898812F09} = {338DBAFC-30E7-4E91-A6F1-D98B569238B9}
+		{8A471488-B6C2-43C7-B29F-E5AB80C1A79C} = {06F6DC59-6941-4A61-BFD5-6CC0C202EE70}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D8E3C2C-BBE9-48EE-B17C-8EC4422C6F88}

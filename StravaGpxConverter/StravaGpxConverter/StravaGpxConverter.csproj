@@ -13,9 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Modules\StravaGpxConverter.Modules.PopupContents\StravaGpxConverter.Modules.PopupContents.csproj" />
     <ProjectReference Include="..\Modules\StravaGpxConverter.Modules.TrackContent\StravaGpxConverter.Modules.TrackContent.csproj" />
+    <ProjectReference Include="..\Services\StravaGpxConverter.Services\StravaGpxConverter.Services.csproj" />
     <ProjectReference Include="..\StravaGpxConverter.Core\StravaGpxConverter.Core.csproj" />
     <ProjectReference Include="..\Services\StravaGpxConverter.Services.Interfaces\StravaGpxConverter.Services.Interfaces.csproj" />
-    <ProjectReference Include="..\Services\StravaGpxConverter.Services\StravaGpxConverter.Services.csproj" />
     <ProjectReference Include="..\StravaGpxConverter.Infrastructure\StravaGpxConverter.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

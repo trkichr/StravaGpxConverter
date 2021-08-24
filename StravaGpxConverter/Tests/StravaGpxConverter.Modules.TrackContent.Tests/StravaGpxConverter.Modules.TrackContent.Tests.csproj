@@ -29,4 +29,10 @@
     <ProjectReference Include="..\..\StravaGpxConverter\StravaGpxConverter.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="testhost.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

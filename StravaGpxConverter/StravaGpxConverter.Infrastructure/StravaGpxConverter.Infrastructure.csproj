@@ -8,10 +8,6 @@
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Fake\" />
-    <Folder Include="Xml\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\StravaGpxConverter.Core\StravaGpxConverter.Core.csproj" />
   </ItemGroup>
 </Project>

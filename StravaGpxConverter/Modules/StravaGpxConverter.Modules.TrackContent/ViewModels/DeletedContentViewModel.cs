@@ -1,13 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
-using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using StravaGpxConverter.Core;
+using StravaGpxConverter.Core.Models.TrackPoint;
+using StravaGpxConverter.Core.Models.TrackSegment;
 using StravaGpxConverter.Core.Mvvm;
 using StravaGpxConverter.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 
@@ -15,26 +18,42 @@ namespace StravaGpxConverter.Modules.TrackContent.ViewModels
 {
     public class DeletedContentViewModel : RegionViewModelBase
     {
-        public DeletedContentViewModel(ILogger logger, IMessageService ms, IRegionManager rm)
+        public DeletedContentViewModel(ILogger logger, IRegionManager rm, IDialogService ds)
             :base(logger, rm)
         {
-            _ms = ms;
+            _ds = ds;
 
-            GpxFileName = new ReactivePropertySlim<string>()
+            SelectedTrackSegment = new ReactivePropertySlim<TrackSegmentEntity>();
+            TrackSegmentItemList = new ObservableCollection<TrackSegmentEntity>();
+            TrackSegmentItems = TrackSegmentItemList
+                .ToReadOnlyReactiveCollection()
                 .AddTo(Disposables);
-            //SelectGpxFileCommand = new ReactiveCommand()
-            //    .WithSubscribe(SelecteGpxFile);
-            //CreateModifiedGpxFileCommand = GpxFileName
-            //    .Select(x => !string.IsNullOrEmpty(x))
-            //    .ToReactiveCommand()
-            //    .WithSubscribe(CreateModifiedGpxFile)
-            //    .AddTo(Disposables);
+            DataGridMouseDoubleClickCommand = new ReactiveCommand()
+                .WithSubscribe(DataGridMouseDoubleClick);
         }
 
-        //private ITrackPointRepository _trackPoint;
-        private IMessageService _ms;
-        public ReactivePropertySlim<string> GpxFileName { get; set; }
-        public ReactiveCommand SelectGpxFileCommand { get; }
+        public void DataGridMouseDoubleClick()
+        {
+            var dp = new DialogParameters();
+            dp.Add(nameof(SelectedTrackSegment.Value.StartLat), SelectedTrackSegment.Value.StartLat.StringValue);
+            dp.Add(nameof(SelectedTrackSegment.Value.StartLon), SelectedTrackSegment.Value.StartLon.StringValue);
+            _ds.ShowDialog(nameof(ViewNames.TrackPointMap), dp, null);
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            AllTrackPointList = navigationContext.Parameters.GetValue<List<TrackPointEntity>>("AllTrackPointList");
+            WaitingTrackPointList = TrackPointService.GetWaitingTrackPointList(AllTrackPointList);
+            TrackSegmentItemList.AddRange(TrackSegmentService.CreateSegmentList(WaitingTrackPointList));
+        }
+
+        private IDialogService _ds;
         public ReactiveCommand CreateModifiedGpxFileCommand { get; }
+        public List<TrackPointEntity> AllTrackPointList { get; set; }
+        public List<TrackPointEntity> WaitingTrackPointList { get; set; }
+        public ReactivePropertySlim<TrackSegmentEntity> SelectedTrackSegment { get; set; }
+        public ObservableCollection<TrackSegmentEntity> TrackSegmentItemList { get; set; }
+        public ReadOnlyReactiveCollection<TrackSegmentEntity> TrackSegmentItems { get; private set; }
+        public ReactiveCommand DataGridMouseDoubleClickCommand { get; }
     }
 }

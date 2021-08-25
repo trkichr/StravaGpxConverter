@@ -12,11 +12,11 @@ namespace StravaGpxConverter.Infrastructure.Fake
     {
         private string GpxFileName { get; set; }
         private XmlDocument Doc { get; set; }
-        private string StartDateTime { get; set; }
+        //private string StartDateTime { get; set; }
 
         public FakeGpx()
         {
-            StartDateTime = string.Empty;
+            //StartDateTime = string.Empty;
             Load(Shared.FakePath + "Fake.gpx");
         }
 
@@ -41,13 +41,13 @@ namespace StravaGpxConverter.Infrastructure.Fake
                     {
                         var ele = trkpt.FirstChild.InnerText;
                         var time = trkpt.LastChild.InnerText;
-                        if (StartDateTime == string.Empty)
-                        {
-                            StartDateTime = time;
-                        }
+                        //if (StartDateTime == string.Empty)
+                        //{
+                        //    StartDateTime = time;
+                        //}
                         var lat = trkpt.Attributes["lat"].InnerText;
                         var lon = trkpt.Attributes["lon"].InnerText;
-                        trackSegmentList.Add(new TrackPointEntity(index, lat, lon, ele, time, StartDateTime, trkpt));
+                        trackSegmentList.Add(new TrackPointEntity(index, lat, lon, ele, time, trkpt));
                         index++;
                     }
                 }

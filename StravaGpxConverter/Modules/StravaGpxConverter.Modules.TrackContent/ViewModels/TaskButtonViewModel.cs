@@ -51,7 +51,7 @@ namespace StravaGpxConverter.Modules.TrackContent.ViewModels
         {
             var np = new NavigationParameters();
             _allTrackPointList = _trackPointRepository.GetAll();
-            np.Add("allTrackPointList", _allTrackPointList);
+            np.Add("AllTrackPointList", _allTrackPointList);
             _rm.RequestNavigate(RegionNames.ContentRegion, nameof(ViewNames.DeletedContent), np);
         }
 

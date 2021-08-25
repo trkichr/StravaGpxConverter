@@ -14,7 +14,7 @@ namespace StravaGpxConverter.Core.Models.TrackPoint
         public UTCDatetime Time { get; }
         public XmlNode Node { get; }
 
-        public TrackPointEntity(uint index, string lat, string lon, string ele, string time, string startTime, XmlNode node)
+        public TrackPointEntity(uint index, string lat, string lon, string ele, string time, XmlNode node)
         {
             Index = index;
             Lat = new Coordinate(lat);

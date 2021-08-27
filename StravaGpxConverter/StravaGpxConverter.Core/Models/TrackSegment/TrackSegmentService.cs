@@ -11,6 +11,11 @@ namespace StravaGpxConverter.Core.Models.TrackSegment
         public static List<TrackSegmentEntity> CreateSegmentList(List<TrackPointEntity> waitingTrackPointList)
         {
             var waitingTrackSegmentList = new List<TrackSegmentEntity>();
+            if(waitingTrackPointList == null)
+            {
+                return waitingTrackSegmentList;
+            }
+
             var startTrackPoint = waitingTrackPointList.First();
             TrackPointEntity preTrackPoint = null;
             TrackPointEntity endTrackPoint = null;

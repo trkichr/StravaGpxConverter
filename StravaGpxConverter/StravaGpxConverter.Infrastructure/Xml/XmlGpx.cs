@@ -17,7 +17,7 @@ namespace StravaGpxConverter.Infrastructure.Xml
             throw new NotImplementedException();
         }
 
-        public void Save()
+        public void Save(List<TrackPointEntity> waitingTrackPointList)
         {
             throw new NotImplementedException();
         }

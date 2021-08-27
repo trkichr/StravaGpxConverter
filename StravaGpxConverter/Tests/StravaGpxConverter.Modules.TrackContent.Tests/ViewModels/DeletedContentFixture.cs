@@ -45,10 +45,9 @@ namespace StravaGpxConverter.Modules.TrackContent.Tests.ViewModels
             Mock<IRegionNavigationService> rnsMock = new Mock<IRegionNavigationService>();
             var np = new NavigationParameters();
             NavigationContext nc = new NavigationContext(rnsMock.Object, new Uri(ViewNames.DeletedContent, UriKind.Relative), np);
-            nc.Parameters.Add("AllTrackPointList", _trackPointRepository.GetAll());
-
+            nc.Parameters.Add(nameof(vm.WaitingTrackPointList), TrackPointService.GetWaitingTrackPointList(_trackPointRepository.GetAll()));
             vm.OnNavigatedTo(nc);
-            vm.AllTrackPointList.Count.Is(195);
+
             vm.WaitingTrackPointList.Count.Is(20);
             vm.WaitingTrackPointList[0].Index.Is<uint>(3);
             vm.WaitingTrackPointList[1].Index.Is<uint>(4);
@@ -60,7 +59,6 @@ namespace StravaGpxConverter.Modules.TrackContent.Tests.ViewModels
         [Fact]
         public void DataGridMouseDoubleClickCalled()
         {
-            //var _dsMock = new Mock<IDialogService>();
             var vm = new DeletedContentViewModel(_loggerMock.Object, _rm, _dsMock.Object);
             vm.SelectedTrackSegment.Value = new TrackSegmentEntity(new TrackPointEntity(0, "34.64591", "134.995037", "39.5", "11:18:04 2021-06-06", null),
                                                                                                     new TrackPointEntity(10, "34.64691", "134.997037", "34.5", "12:18:04 2021-06-06", null));

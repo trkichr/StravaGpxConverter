@@ -50,19 +50,15 @@ namespace StravaGpxConverter.Modules.TrackContent.ViewModels
         public void ReadGpxFile()
         {
             var np = new NavigationParameters();
-            _trackPointRepository.Load(GpxFileName.Value);
-            AllTrackPointList = _trackPointRepository.GetAll();
-            WaitingTrackPointList = TrackPointService.GetWaitingTrackPointList(AllTrackPointList);
-
-            np.Add(nameof(WaitingTrackPointList), WaitingTrackPointList);
+            _allTrackPointList = _trackPointRepository.GetAll();
+            np.Add("AllTrackPointList", _allTrackPointList);
             _rm.RequestNavigate(RegionNames.ContentRegion, nameof(ViewNames.DeletedContent), np);
         }
 
         private ITrackPointRepository _trackPointRepository;
         private IMessageService _ms;
         private IRegionManager _rm;
-        public List<TrackPointEntity> AllTrackPointList { get; set; }
-        public List<TrackPointEntity> WaitingTrackPointList { get; set; }
+        public IEnumerable<TrackPointEntity> _allTrackPointList;
         public ReactivePropertySlim<string> GpxFileName { get; set; }
         public ReactiveCommand SelectGpxFileCommand { get; }
         public ReactiveCommand ReadGpxFileCommand { get; }

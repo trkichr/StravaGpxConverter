@@ -8,6 +8,6 @@ namespace StravaGpxConverter.Core.Models.TrackPoint
     {
         public void Load(string gpxFileName);
         public List<TrackPointEntity> GetAll();
-        public void Save(List<TrackPointEntity> waitingTrackPointList);
+        public void Save();
     }
 }

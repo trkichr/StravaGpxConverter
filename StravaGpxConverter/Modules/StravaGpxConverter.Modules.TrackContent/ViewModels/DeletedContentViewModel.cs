@@ -42,12 +42,14 @@ namespace StravaGpxConverter.Modules.TrackContent.ViewModels
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
-            WaitingTrackPointList = navigationContext.Parameters.GetValue<List<TrackPointEntity>>(nameof(WaitingTrackPointList));
+            AllTrackPointList = navigationContext.Parameters.GetValue<List<TrackPointEntity>>("AllTrackPointList");
+            WaitingTrackPointList = TrackPointService.GetWaitingTrackPointList(AllTrackPointList);
             TrackSegmentItemList.AddRange(TrackSegmentService.CreateSegmentList(WaitingTrackPointList));
         }
 
         private IDialogService _ds;
         public ReactiveCommand CreateModifiedGpxFileCommand { get; }
+        public List<TrackPointEntity> AllTrackPointList { get; set; }
         public List<TrackPointEntity> WaitingTrackPointList { get; set; }
         public ReactivePropertySlim<TrackSegmentEntity> SelectedTrackSegment { get; set; }
         public ObservableCollection<TrackSegmentEntity> TrackSegmentItemList { get; set; }

@@ -12,10 +12,12 @@ namespace StravaGpxConverter.Infrastructure.Fake
     {
         private string GpxFileName { get; set; }
         private XmlDocument Doc { get; set; }
+        //private string StartDateTime { get; set; }
 
         public FakeGpx()
         {
-            Load("Fake.gpx");
+            //StartDateTime = string.Empty;
+            Load(Shared.FakePath + "Fake.gpx");
         }
 
         public List<TrackPointEntity> GetAll()
@@ -39,6 +41,10 @@ namespace StravaGpxConverter.Infrastructure.Fake
                     {
                         var ele = trkpt.FirstChild.InnerText;
                         var time = trkpt.LastChild.InnerText;
+                        //if (StartDateTime == string.Empty)
+                        //{
+                        //    StartDateTime = time;
+                        //}
                         var lat = trkpt.Attributes["lat"].InnerText;
                         var lon = trkpt.Attributes["lon"].InnerText;
                         trackSegmentList.Add(new TrackPointEntity(index, lat, lon, ele, time, trkpt));
@@ -57,7 +63,7 @@ namespace StravaGpxConverter.Infrastructure.Fake
                 throw new GpxFileNotSelectedException("GPXファイルが選択されていません");
             }
 
-            GpxFileName = Shared.FakePath + gpxFileName;
+            GpxFileName = gpxFileName;
             Doc = new XmlDocument();
             try
             {
@@ -75,7 +81,7 @@ namespace StravaGpxConverter.Infrastructure.Fake
             }
         }
 
-        public void Save(List<TrackPointEntity> waitingTrackPointList)
+        public void Save()
         {
             throw new NotImplementedException();
         }

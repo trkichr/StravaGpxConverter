@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"             
              prism:ViewModelLocator.AutoWireViewModel="True"
-             Height="30" Width="950">
+             Height="35" Width="950">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />

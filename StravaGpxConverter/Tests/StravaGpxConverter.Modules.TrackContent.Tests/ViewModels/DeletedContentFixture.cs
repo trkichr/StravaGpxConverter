@@ -45,10 +45,9 @@ namespace StravaGpxConverter.Modules.TrackContent.Tests.ViewModels
             Mock<IRegionNavigationService> rnsMock = new Mock<IRegionNavigationService>();
             var np = new NavigationParameters();
             NavigationContext nc = new NavigationContext(rnsMock.Object, new Uri(ViewNames.DeletedContent, UriKind.Relative), np);
-            nc.Parameters.Add("AllTrackPointList", _trackPointRepository.GetAll());
-
+            nc.Parameters.Add(nameof(vm.WaitingTrackPointList), TrackPointService.GetWaitingTrackPointList(_trackPointRepository.GetAll()));
             vm.OnNavigatedTo(nc);
-            vm.AllTrackPointList.Count.Is(195);
+
             vm.WaitingTrackPointList.Count.Is(20);
             vm.WaitingTrackPointList[0].Index.Is<uint>(3);
             vm.WaitingTrackPointList[1].Index.Is<uint>(4);

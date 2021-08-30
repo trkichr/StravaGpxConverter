@@ -33,7 +33,7 @@ namespace StravaGpxConverter.Infrastructure.Xml
                 if (!GpxFileName.Contains("_bak")
                     && gpx.Attributes.Count == 6)
                 {
-                    Doc.Save(GpxFileName + "_bak");
+                    //Doc.Save(GpxFileName + "_bak");
                 }
             }
             catch (Exception ex)

@@ -43,7 +43,8 @@ namespace StravaGpxConverter.Modules.TrackContent.ViewModels
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             WaitingTrackPointList = navigationContext.Parameters.GetValue<List<TrackPointEntity>>(nameof(WaitingTrackPointList));
-            TrackSegmentItemList.AddRange(TrackSegmentService.CreateSegmentList(WaitingTrackPointList));
+            TrackSegmentItemList.AddRange(TrackSegmentService.CreateSegmentList(WaitingTrackPointList)
+                .Where(x => x.WaitingTime.Value.TotalSeconds > 60));
         }
 
         private IDialogService _ds;

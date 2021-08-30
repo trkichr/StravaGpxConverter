@@ -15,7 +15,7 @@
             Orientation="Horizontal">
             <TextBlock Text="ファイル名:" Style="{StaticResource BasicTextStyle}" />
             <Label Content="{Binding GpxFileName.Value}"
-                   Width="300"
+                   Width="500"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Stretch"/>
             <Button

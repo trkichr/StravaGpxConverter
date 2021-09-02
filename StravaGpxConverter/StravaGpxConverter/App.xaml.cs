@@ -24,6 +24,10 @@ namespace StravaGpxConverter
         {
             containerRegistry.RegisterSingleton<IMessageService, MessageService>();
 
+            var config = new NLog.Config.LoggingConfiguration();
+            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "log/file.txt" };
+            config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logfile);
+            NLog.LogManager.Configuration = config;
             var factory = new NLog.Extensions.Logging.NLogLoggerFactory();
             ILogger logger = factory.CreateLogger("");
             containerRegistry.RegisterInstance(logger);

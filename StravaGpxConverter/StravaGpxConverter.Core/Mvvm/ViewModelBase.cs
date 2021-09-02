@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Prism.Mvvm;
 using Prism.Navigation;
+using StravaGpxConverter.Core.Models.Exceptions;
 using System;
 using System.Reactive.Disposables;
+using System.Windows.Forms;
 
 namespace StravaGpxConverter.Core.Mvvm
 {
@@ -24,25 +26,25 @@ namespace StravaGpxConverter.Core.Mvvm
 
         protected void ExceptionProc(Exception ex)
         {
-            //var exceptionBase = ex as ExceptionBase;
-            //_logger.Log(exceptionBase.Level, ex.InnerException, ex.Message + "  --->   " + exceptionBase.InnerException.Message + "\r\n" + ex.StackTrace + "\r\n", null);
+            var exceptionBase = ex as ExceptionBase;
+            _logger.Log(exceptionBase.Level, ex.InnerException, ex.Message + "  --->   " + exceptionBase.InnerException.Message + "\r\n" + ex.StackTrace + "\r\n", null);
 
-            //MessageBoxIcon icon = MessageBoxIcon.Error;
-            //string caption = "エラー";
-            //if (exceptionBase != null)
-            //{
-            //    if (exceptionBase.Level == LogLevel.Information)
-            //    {
-            //        icon = MessageBoxIcon.Information;
-            //        caption = "情報";
-            //    }
-            //    else if (exceptionBase.Level == LogLevel.Warning)
-            //    {
-            //        icon = MessageBoxIcon.Warning;
-            //        caption = "警告";
-            //    }
-            //    MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, icon);
-            //}
+            MessageBoxIcon icon = MessageBoxIcon.Error;
+            string caption = "エラー";
+            if (exceptionBase != null)
+            {
+                if (exceptionBase.Level == LogLevel.Information)
+                {
+                    icon = MessageBoxIcon.Information;
+                    caption = "情報";
+                }
+                else if (exceptionBase.Level == LogLevel.Warning)
+                {
+                    icon = MessageBoxIcon.Warning;
+                    caption = "警告";
+                }
+                MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, icon);
+            }
 
         }
     }

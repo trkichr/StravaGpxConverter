@@ -22,7 +22,7 @@ namespace StravaGpxConverter.Infrastructure.Fake
         {
             if (string.IsNullOrEmpty(GpxFileName))
             {
-                throw new GpxFileNotLoadedException("GPXファイルがロードされていません");
+                throw new GpxFileNotLoadedException("Gpxファイルの読込に失敗しました");
             }
             var trackSegmentList = new List<TrackPointEntity>();
 

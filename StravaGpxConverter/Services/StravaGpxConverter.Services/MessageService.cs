@@ -27,7 +27,6 @@ namespace StravaGpxConverter.Services
         {
             using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = @"V:\MyTracks\gpx";
                 openFileDialog.Filter = "gpx files (*.gpx)|*.gpx|gpx backup files (*.gpx_bak*)|*.gpx_bak";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;

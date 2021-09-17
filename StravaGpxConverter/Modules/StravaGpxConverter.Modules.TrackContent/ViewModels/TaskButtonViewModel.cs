@@ -12,6 +12,7 @@ using StravaGpxConverter.Infrastructure;
 using StravaGpxConverter.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 
@@ -31,12 +32,15 @@ namespace StravaGpxConverter.Modules.TrackContent.ViewModels
             _rm = rm;
             _trackPointRepository = trackPointRepository;
 
-            GpxFileName = new ReactivePropertySlim<string>()
+            FileNameCollection = new ObservableCollection<string>();
+            FileNameList = FileNameCollection
+                .ToReadOnlyReactiveCollection()
                 .AddTo(Disposables);
             SelectGpxFileCommand = new ReactiveCommand()
                 .WithSubscribe(SelectGpxFile);
-            ReadGpxFileCommand = GpxFileName
-                .Select(x => !string.IsNullOrEmpty(x))
+            IsReadGpxFile = new ReactivePropertySlim<bool>(false)
+                .AddTo(Disposables);
+            ReadGpxFileCommand = IsReadGpxFile
                 .ToReactiveCommand()
                 .WithSubscribe(ReadGpxFile)
                 .AddTo(Disposables);
@@ -44,7 +48,16 @@ namespace StravaGpxConverter.Modules.TrackContent.ViewModels
 
         public void SelectGpxFile()
         {
-            GpxFileName.Value = _ms.ShowFileDialog();
+            var fileNameList = _ms.ShowFileDialog();
+            if(fileNameList == null && FileNameCollection.Count == 0)
+            {
+                IsReadGpxFile.Value = false;
+            }
+            else
+            {
+                IsReadGpxFile.Value = true;
+                FileNameCollection.AddRange(fileNameList);
+            }
         }
 
         public void ReadGpxFile()
@@ -53,9 +66,10 @@ namespace StravaGpxConverter.Modules.TrackContent.ViewModels
 
             try
             {
-                _trackPointRepository.Load(GpxFileName.Value);
+                _trackPointRepository.Load(FileNameCollection.ToList());
                 AllTrackPointList = _trackPointRepository.GetAll();
                 WaitingTrackPointList = TrackPointService.GetWaitingTrackPointList(AllTrackPointList);
+                _trackPointRepository.Save(WaitingTrackPointList);
             }
             catch(Exception ex)
             {
@@ -72,7 +86,9 @@ namespace StravaGpxConverter.Modules.TrackContent.ViewModels
         private IRegionManager _rm;
         public List<TrackPointEntity> AllTrackPointList { get; set; }
         public List<TrackPointEntity> WaitingTrackPointList { get; set; }
-        public ReactivePropertySlim<string> GpxFileName { get; set; }
+        public ObservableCollection<string> FileNameCollection { get; set; }
+        public ReadOnlyReactiveCollection<string> FileNameList { get; private set; }
+        public ReactivePropertySlim<bool> IsReadGpxFile{ get; }
         public ReactiveCommand SelectGpxFileCommand { get; }
         public ReactiveCommand ReadGpxFileCommand { get; }
     }

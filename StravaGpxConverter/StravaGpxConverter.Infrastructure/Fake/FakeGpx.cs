@@ -1,8 +1,10 @@
 ﻿using StravaGpxConverter.Core;
+using StravaGpxConverter.Core.Models;
 using StravaGpxConverter.Core.Models.Exceptions;
 using StravaGpxConverter.Core.Models.TrackPoint;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -15,7 +17,6 @@ namespace StravaGpxConverter.Infrastructure.Fake
 
         public FakeGpx()
         {
-            Load("Fake.gpx");
         }
 
         public List<TrackPointEntity> GetAll()
@@ -49,19 +50,16 @@ namespace StravaGpxConverter.Infrastructure.Fake
 
             return trackSegmentList;
         }
-
-        public void Load(string gpxFileName)
+        public void Load(List<string> gpxFileNameList)
         {
-            if (string.IsNullOrEmpty(gpxFileName))
+            if (gpxFileNameList == null || gpxFileNameList.Count == 0)
             {
                 throw new GpxFileNotSelectedException("GPXファイルが選択されていません");
             }
 
-            GpxFileName = Shared.FakePath + gpxFileName;
-            Doc = new XmlDocument();
             try
             {
-                Doc.Load(GpxFileName);
+                CombineGpxFileList(gpxFileNameList);
                 var gpx = Doc.ChildNodes[1];
                 if (!GpxFileName.Contains("_bak")
                     && gpx.Attributes.Count == 6)
@@ -75,9 +73,97 @@ namespace StravaGpxConverter.Infrastructure.Fake
             }
         }
 
+        private void CombineGpxFileList(List<string> gpxFileNameList)
+        {
+            var docList = new Dictionary<UTCDatetime, XmlDocument>();
+
+            foreach (string gpxFileName in gpxFileNameList)
+            {
+                var doc = new XmlDocument();
+                doc.Load(gpxFileName);
+                var gpx = doc.ChildNodes[1];
+                var trk = gpx.ChildNodes[1];
+                foreach (XmlNode node in trk.ChildNodes)
+                {
+                    if (node.Name == "trkseg")
+                    {
+                        var time = node.ChildNodes[0].LastChild.InnerText;
+                        docList.Add(new UTCDatetime(time), doc);
+                        break;
+                    }
+                }
+            }
+
+            var orderedDocList = docList.OrderBy(x => x.Key.Time).Select(x => x.Value).ToList();
+            Doc = orderedDocList.First();
+            var fileName = Doc.BaseURI.Split("/").Last();
+            GpxFileName = gpxFileNameList.Where(x => x.Contains(fileName)).First();
+            if (orderedDocList.Count == 1)
+            {
+                return;
+            }
+
+            for (int i = 1; i < orderedDocList.Count(); i++)
+            {
+                var gpx = orderedDocList[i].ChildNodes[1];
+                var trk = gpx.ChildNodes[1];
+                foreach (XmlNode trksegNode in trk.ChildNodes)
+                {
+                    if (trksegNode.Name == "trkseg")
+                    {
+                        var xx = Doc.ChildNodes[1];
+                        var node = Doc.ImportNode(trksegNode, true);
+                        Doc.DocumentElement.ChildNodes[1].InsertAfter(node, Doc.DocumentElement.ChildNodes[1].LastChild);
+                    }
+                }
+            }
+        }
+
         public void Save(List<TrackPointEntity> waitingTrackPointList)
         {
-            throw new NotImplementedException();
+            var gpx = Doc.ChildNodes[1];
+            var trk = gpx.ChildNodes[1];
+            var extensions = trk.ChildNodes[3];
+
+            if (gpx.Attributes.Count != 6)
+            {
+                return;
+            }
+
+            gpx.Attributes.RemoveAt(3);
+            gpx.Attributes["creator"].InnerText = "StravaGPX";
+            gpx.Attributes["xsi:schemaLocation"].InnerText =
+                "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd";
+
+            trk.RemoveChild(extensions);
+
+            foreach (XmlNode node in waitingTrackPointList.Select(x => x.Node))
+            {
+                var waitingDateTime = DateTime.Parse(node.LastChild.InnerText);
+                foreach (XmlNode trksegNode in trk.ChildNodes)
+                {
+                    if (trksegNode.Name == "trkseg")
+                    {
+                        if (DateTime.Parse(trksegNode.FirstChild.LastChild.InnerText) > waitingDateTime
+                            || DateTime.Parse(trksegNode.LastChild.LastChild.InnerText) < waitingDateTime)
+                        {
+                            continue;
+                        }
+
+                        try
+                        {
+                            trksegNode.RemoveChild(node);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new TrackPointNotDeleteException("TrackPointの削除に失敗しました", ex);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            Doc.Save(GpxFileName + "_converted");
         }
     }
 }

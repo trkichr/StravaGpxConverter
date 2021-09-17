@@ -37,12 +37,15 @@ namespace StravaGpxConverter.Modules.TrackContent.Tests.ViewModels
         {
             _loggerMock = new Mock<ILogger>();
             _msMock = new Mock<IMessageService>();
-            _msMock.Setup(x => x.ShowFileDialog()).Returns("test.gpx");
+            _msMock.Setup(x => x.ShowFileDialog())
+                .Returns(new string[] { "test1.gpx", "test2.gpx", "test3.gpx" });
 
             var vm = new TaskButtonViewModel(_loggerMock.Object, _msMock.Object, _rm);
             vm.SelectGpxFile();
-            vm.GpxFileName.Value.Is("test.gpx");
-
+            vm.IsReadGpxFile.Value.IsTrue();
+            vm.FileNameCollection.Contains("test1.gpx").IsTrue();
+            vm.FileNameCollection.Contains("test2.gpx").IsTrue();
+            vm.FileNameCollection.Contains("test3.gpx").IsTrue();
         }
 
         [Fact]
@@ -51,7 +54,9 @@ namespace StravaGpxConverter.Modules.TrackContent.Tests.ViewModels
             _loggerMock = new Mock<ILogger>();
             _msMock = new Mock<IMessageService>();
             var vm = new TaskButtonViewModel(_loggerMock.Object, _msMock.Object, _rm);
-            vm.GpxFileName.Value = "Fake.gpx";
+            vm.FileNameCollection.Add(Shared.FakePath + "Fake1.gpx");
+            vm.FileNameCollection.Add(Shared.FakePath + "Fake2.gpx");
+            vm.FileNameCollection.Add(Shared.FakePath + "Fake3.gpx");
             vm.ReadGpxFile();
 
             vm.AllTrackPointList.Count.Is(195);

@@ -1,4 +1,5 @@
-﻿using StravaGpxConverter.Core.Models.Exceptions;
+﻿using StravaGpxConverter.Core.Models;
+using StravaGpxConverter.Core.Models.Exceptions;
 using StravaGpxConverter.Core.Models.TrackPoint;
 using System;
 using System.Collections.Generic;
@@ -17,28 +18,72 @@ namespace StravaGpxConverter.Infrastructure.Xml
         {
         }
 
-        public void Load(string gpxFileName)
+        public void Load(List<string> gpxFileNameList)
         {
-            if (string.IsNullOrEmpty(gpxFileName))
+            if (gpxFileNameList == null || gpxFileNameList.Count == 0)
             {
                 throw new GpxFileNotSelectedException("GPXファイルが選択されていません");
             }
 
-            GpxFileName = gpxFileName;
-            Doc = new XmlDocument();
             try
             {
-                Doc.Load(GpxFileName);
+                CombineGpxFileList(gpxFileNameList);
                 var gpx = Doc.ChildNodes[1];
                 if (!GpxFileName.Contains("_bak")
                     && gpx.Attributes.Count == 6)
                 {
-                    //Doc.Save(GpxFileName + "_bak");
+                    Doc.Save(GpxFileName + "_bak");
                 }
             }
             catch (Exception ex)
             {
                 throw new GpxFileNotLoadedException("GPXファイルのロードに失敗しました", ex);
+            }
+        }
+
+        private void CombineGpxFileList(List<string> gpxFileNameList)
+        {
+            var docList = new Dictionary<UTCDatetime, XmlDocument>();
+
+            foreach (string gpxFileName in gpxFileNameList)
+            {
+                var doc = new XmlDocument();
+                doc.Load(gpxFileName);
+                var gpx = doc.ChildNodes[1];
+                var trk = gpx.ChildNodes[1];
+                foreach (XmlNode node in trk.ChildNodes)
+                {
+                    if (node.Name == "trkseg")
+                    {
+                        var time = node.ChildNodes[0].LastChild.InnerText;
+                        docList.Add(new UTCDatetime(time), doc);
+                        break;
+                    }
+                }
+            }
+
+            var orderedDocList = docList.OrderBy(x => x.Key.Time).Select(x => x.Value).ToList();
+            Doc = orderedDocList.First();
+            var fileName = Doc.BaseURI.Split("/").Last();
+            GpxFileName = gpxFileNameList.Where(x => x.Contains(fileName)).First();
+            if (orderedDocList.Count == 1)
+            {
+                return;
+            }
+
+            for (int i = 1; i < orderedDocList.Count(); i++)
+            {
+                var gpx = orderedDocList[i].ChildNodes[1];
+                var trk = gpx.ChildNodes[1];
+                foreach (XmlNode trksegNode in trk.ChildNodes)
+                {
+                    if (trksegNode.Name == "trkseg")
+                    {
+                        var xx = Doc.ChildNodes[1];
+                        var node = Doc.ImportNode(trksegNode, true);
+                        Doc.DocumentElement.ChildNodes[1].InsertAfter(node, Doc.DocumentElement.ChildNodes[1].LastChild);
+                    }
+                }
             }
         }
 
@@ -118,7 +163,7 @@ namespace StravaGpxConverter.Infrastructure.Xml
                 }
             }
 
-            Doc.Save(GpxFileName);
+            Doc.Save(GpxFileName + "_converted");
         }
     }
 }

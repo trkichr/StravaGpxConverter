@@ -23,21 +23,22 @@ namespace StravaGpxConverter.Services
             MessageBox.Show(message);
         }
 
-        public string ShowFileDialog()
+        public string[] ShowFileDialog()
         {
             using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
             {
                 openFileDialog.Filter = "gpx files (*.gpx)|*.gpx|gpx backup files (*.gpx_bak*)|*.gpx_bak";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
+                openFileDialog.Multiselect = true;
 
                 if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    return openFileDialog.FileName;
+                    return openFileDialog.FileNames;
                 }
             }
 
-            return string.Empty;
+            return null;
         }
     }
 }

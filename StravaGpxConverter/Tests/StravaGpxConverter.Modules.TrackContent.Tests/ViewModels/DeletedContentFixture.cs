@@ -43,6 +43,11 @@ namespace StravaGpxConverter.Modules.TrackContent.Tests.ViewModels
         {
             var vm = new DeletedContentViewModel(_loggerMock.Object, _rm, _dsMock.Object);
             Mock<IRegionNavigationService> rnsMock = new Mock<IRegionNavigationService>();
+            List<string> fileNameList = new List<string>();
+            fileNameList.Add(Shared.FakePath + "Fake1.gpx");
+            fileNameList.Add(Shared.FakePath + "Fake2.gpx");
+            fileNameList.Add(Shared.FakePath + "Fake3.gpx");
+            _trackPointRepository.Load(fileNameList);
             var np = new NavigationParameters();
             NavigationContext nc = new NavigationContext(rnsMock.Object, new Uri(ViewNames.DeletedContent, UriKind.Relative), np);
             nc.Parameters.Add(nameof(vm.WaitingTrackPointList), TrackPointService.GetWaitingTrackPointList(_trackPointRepository.GetAll()));
@@ -53,7 +58,7 @@ namespace StravaGpxConverter.Modules.TrackContent.Tests.ViewModels
             vm.WaitingTrackPointList[1].Index.Is<uint>(4);
             vm.WaitingTrackPointList[2].Index.Is<uint>(28);
             vm.WaitingTrackPointList[19].Index.Is<uint>(194);
-            vm.TrackSegmentItemList.Count.Is(6);
+            vm.TrackSegmentItemList.Count.Is(1);
         }
 
         [Fact]

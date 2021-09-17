@@ -14,9 +14,9 @@
         ItemsSource="{Binding TrackSegmentItems, Mode=OneWay}"
         SelectedItem="{Binding SelectedTrackSegment.Value, Mode=TwoWay}"
         SelectionMode="Single"
-        HorizontalAlignment="Left"
+        HorizontalAlignment="Center"
         VerticalAlignment="Top"
-        Height="780" Width="925">
+        Height="780" Width="950">
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="MouseDoubleClick">
                 <Interactivity:EventToReactiveCommand

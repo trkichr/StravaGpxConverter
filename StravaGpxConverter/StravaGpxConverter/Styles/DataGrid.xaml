@@ -9,6 +9,11 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
 
+    <Style x:Key="DataGridFileNameHeaderStyle" TargetType="DataGridColumnHeader" BasedOn="{StaticResource BaseDataGridColumnHeaderStyle}">
+        <Setter Property="Width" Value="200" />
+        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+    </Style>
+
     <Style x:Key="DataGridTimeSpanHeaderStyle" TargetType="DataGridColumnHeader" BasedOn="{StaticResource BaseDataGridColumnHeaderStyle}">
         <Setter Property="Width" Value="100" />
         <Setter Property="HorizontalAlignment" Value="Left"></Setter>

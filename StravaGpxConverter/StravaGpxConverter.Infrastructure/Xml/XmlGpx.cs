@@ -163,7 +163,7 @@ namespace StravaGpxConverter.Infrastructure.Xml
                 }
             }
 
-            Doc.Save(GpxFileName + "_converted");
+            Doc.Save(GpxFileName.Replace(".gpx", "_converted") + ".gpx");
         }
     }
 }
